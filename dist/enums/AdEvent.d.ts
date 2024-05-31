@@ -1,1 +1,1 @@
-export type AdEvent = 'finalDestroy' | 'onReward' | 'onSkip' | 'error' | 'renderError' | 'destroy';
+export type AdEvent = 'onReward' | 'onSkip' | 'onError' | 'onBannerNotFound' | 'onStart';
