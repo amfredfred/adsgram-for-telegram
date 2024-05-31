@@ -11,7 +11,7 @@ export class Adsgram implements IAdsgram {
     constructor(config: AdBlockConfig) {
         this.config = config;
         this.loadScript().then(() => {
-            this.adsGramController = (window as any).Adsgram?.init?.(this.config);
+            this.adsGramController = (window as any).Adsgram.init(this.config);
         });
     }
 
