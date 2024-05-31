@@ -1,8 +1,8 @@
-import { AdBlockConfig } from '@interfaces/AdBlockConfig';
-import { IAdsgram } from '@interfaces/IAdsgram';
-import { AdEvent } from '@interfaces/AdEvent';
-import { AdResultPromise } from '@interfaces/AdResultPromise';
-import { AdEventCallback } from '@interfaces/AdEventCallback';
+import { AdBlockConfig } from '../interfaces/AdBlockConfig';
+import { IAdsgram } from '../interfaces/IAdsgram';
+import { AdEvent } from '../enums/AdEvent';
+import { AdResultPromise } from '../interfaces/AdResultPromise';
+import { AdEventCallback } from '../interfaces/AdEventCallback';
 
 export class Adsgram implements IAdsgram {
     private config: AdBlockConfig;
@@ -18,7 +18,7 @@ export class Adsgram implements IAdsgram {
     private async loadScript(): Promise<void> {
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
-            script.src = 'https://sad.adsgram.ai/js/sad.min.js'; 
+            script.src = 'https://sad.adsgram.ai/js/sad.min.js';
             script.onload = () => resolve();
             script.onerror = (error) => reject(error);
             document.body.appendChild(script);

@@ -1,3 +1,3 @@
-import { AdEvent } from "@interfaces/AdEvent";
+import { AdEvent } from "../enums/AdEvent";
 
 export type AdEventCallback = (event: AdEvent, data?: any) => void;

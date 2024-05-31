@@ -2,13 +2,13 @@
   "name": "adsgram-for-telegram",
   "version": "1.0.0",
   "description": "Adsgram is a novel ads network built specifically for Telegram Mini Apps. We are solving the current acute problem of the lacking ads monetisation tools for Telegram Mini Apps.",
-  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "C:/WorkSpace/Apps/Packages/adsgram-for-telegram.git"
+    "url": "https://github.com/amfredfred/adsgram-for-telegram.git"
   },
   "keywords": [
     "adsgram",
@@ -21,5 +21,7 @@
   "devDependencies": {
     "@types/node": "^20.12.13",
     "typescript": "^5.4.5"
-  }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts"
 }

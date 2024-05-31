@@ -1,8 +1,8 @@
-import { Adsgram } from "@build/Adsgram";
-import { AdBlockConfig } from "@interfaces/AdBlockConfig";
-import { AdEvent } from "@interfaces/AdEvent";
-import { AdEventCallback } from "@interfaces/AdEventCallback";
-import { IUseAdsgram } from "@interfaces/IUseAdsgram";
+import { Adsgram } from "./Adsgram";
+import { AdBlockConfig } from "../interfaces/AdBlockConfig";
+import { AdEvent } from "../enums/AdEvent";
+import { AdEventCallback } from "../interfaces/AdEventCallback";
+import { IUseAdsgram } from "../interfaces/IUseAdsgram";
 
 export class UseAdsgram extends Adsgram implements IUseAdsgram {
     constructor(config: AdBlockConfig) {
