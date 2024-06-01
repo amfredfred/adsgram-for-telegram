@@ -1,7 +1,10 @@
-// AdEvent.ts
-export type AdEvent =
-    | 'onReward'
-    | 'onSkip'
-    | 'onError'
-    | 'onBannerNotFound'
-    | 'onStart';
+/**
+ * Enum for Ad events.
+ */
+export enum AdEvent {
+    reward = 'onReward',
+    skip = 'onSkip',
+    error = 'onError',
+    bannerNotFound = 'onBannerNotFound',
+    start = 'onStart',
+}

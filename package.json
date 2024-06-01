@@ -27,5 +27,8 @@
     "typescript": "^5.4.5"
   },
   "main": "dist/index.js",
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "vue-plyr": "^7.0.0"
+  }
 }

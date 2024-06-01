@@ -8,12 +8,23 @@ export class UseAdsgram extends Adsgram implements IUseAdsgram {
     constructor(config: AdBlockConfig) {
         super(config);
     }
-
-    on(event: AdEvent, callback: AdEventCallback): void {
-        super.addEventListener(event, callback);
+    /**
+     * Adds an event listener.
+     * @param {AdEvent} event - The event type.
+     * @param {AdEventCallback} callback - The event callback.
+     * @returns {Promise<void>} A promise that resolves when the listener is added.
+     */
+    async on(event: AdEvent, callback: AdEventCallback): Promise<void> {
+        return super.addEventListener(event, callback);
     }
 
-    off(event: AdEvent, callback: AdEventCallback): void {
+    /**
+     * Removes an event listener.
+     * @param {AdEvent} event - The event type.
+     * @param {AdEventCallback} callback - The event callback.
+     * @returns {Promise<void>} A promise that resolves when the listener is removed.
+     */
+    async off(event: AdEvent, callback: AdEventCallback): Promise<void> {
         super.removeEventListener(event, callback);
     }
 }

@@ -14,8 +14,7 @@ class Adsgram {
     constructor(config) {
         this.config = config;
         this.loadScript().then(() => {
-            var _a, _b;
-            this.adsGramController = (_b = (_a = window.Adsgram) === null || _a === void 0 ? void 0 : _a.init) === null || _b === void 0 ? void 0 : _b.call(_a, this.config);
+            this.adsGramController = window.Adsgram.init(this.config);
         });
     }
     loadScript() {
