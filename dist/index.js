@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UseAdsgram = exports.useAdsgram = exports.Adsgram = void 0;
+exports.useAdsgram = exports.UseAdsgram = exports.Adsgram = void 0;
 const Adsgram_1 = require("./classes/Adsgram");
 Object.defineProperty(exports, "Adsgram", { enumerable: true, get: function () { return Adsgram_1.Adsgram; } });
 const AdsgramUse_1 = require("./classes/AdsgramUse");
