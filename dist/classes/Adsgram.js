@@ -65,7 +65,7 @@ class Adsgram {
      */
     loadScript() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.isConnected)
+            if (!this.isConnected)
                 return console.log("You are offline");
             return new Promise((resolve, reject) => {
                 const script = document.createElement('script');
@@ -82,7 +82,7 @@ class Adsgram {
      */
     ensureInitialized() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.isConnected)
+            if (!this.isConnected)
                 return console.log("You are offline");
             if (this.isInitialized === null) {
                 yield new Promise(resolve => setTimeout(resolve, 100));

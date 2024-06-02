@@ -76,7 +76,7 @@ export class Adsgram implements IAdsgram {
      * @returns {Promise<void>} A promise that resolves when the script is loaded.
      */
     private async loadScript(): Promise<void> {
-        if (this.isConnected) return console.log("You are offline")
+        if (!this.isConnected) return console.log("You are offline")
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = this.scriptSource;
@@ -91,7 +91,7 @@ export class Adsgram implements IAdsgram {
      * @returns {Promise<void>} A promise that resolves when the controller is initialized.
      */
     private async ensureInitialized(): Promise<void> {
-        if (this.isConnected) return console.log("You are offline")
+        if (!this.isConnected) return console.log("You are offline")
         if (this.isInitialized === null) {
             await new Promise(resolve => setTimeout(resolve, 100));
             return this.ensureInitialized();
