@@ -11,11 +11,17 @@ export declare class Adsgram implements IAdsgram {
     private adsGramController?;
     private isInitialized;
     private readonly scriptSource;
+    private isConnected;
     /**
      * Constructor.
      * @param {AdBlockConfig} config - The ad block config.
      */
     constructor(config: AdBlockConfig);
+    /**
+     * Initializes the Adsgram controller.
+     * @returns {Promise<void>} A promise that resolves when the controller is initialized.
+     */
+    private initializeController;
     /**
      * Loads the Adsgram script.
      * @returns {Promise<void>} A promise that resolves when the script is loaded.

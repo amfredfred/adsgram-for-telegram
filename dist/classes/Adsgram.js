@@ -19,15 +19,28 @@ class Adsgram {
      * @param {AdBlockConfig} config - The ad block config.
      */
     constructor(config) {
-        this.isInitialized = false;
+        this.isInitialized = null;
         this.scriptSource = 'https://sad.adsgram.ai/js/sad.min.js';
+        this.isConnected = navigator.onLine;
         this.config = config;
-        this.loadScript().then(() => {
-            this.isInitialized = true;
-            this.adsGramController = window.Adsgram.init(this.config);
-        }).catch((error) => {
-            console.log({ adsgram: { error } });
-        }).finally(() => {
+        this.loadScript()
+            .then(this.initializeController)
+            .catch((error) => { console.error({ adsgram: { loading_error: error } }); });
+    }
+    /**
+     * Initializes the Adsgram controller.
+     * @returns {Promise<void>} A promise that resolves when the controller is initialized.
+     */
+    initializeController() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.adsGramController = window.Adsgram.init(this.config);
+                this.isInitialized = true;
+            }
+            catch (error) {
+                console.log({ adsgram: { controller: error } });
+                this.isInitialized = false;
+            }
         });
     }
     /**
@@ -36,6 +49,8 @@ class Adsgram {
      */
     loadScript() {
         return __awaiter(this, void 0, void 0, function* () {
+            if (this.isConnected)
+                return console.log("You are offline");
             return new Promise((resolve, reject) => {
                 const script = document.createElement('script');
                 script.src = this.scriptSource;
@@ -51,9 +66,14 @@ class Adsgram {
      */
     ensureInitialized() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!this.isInitialized) {
+            if (this.isConnected)
+                return console.log("You are offline");
+            if (this.isInitialized === null) {
                 yield new Promise(resolve => setTimeout(resolve, 100));
                 return this.ensureInitialized();
+            }
+            else if (this.isInitialized === false) {
+                yield this.initializeController();
             }
         });
     }
