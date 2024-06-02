@@ -19,8 +19,24 @@ class Adsgram {
      * @param {AdBlockConfig} config - The ad block config.
      */
     constructor(config) {
+        /**
+         * Whether the Adsgram controller is initialized.
+         * @type {boolean | null}
+         * @private
+         */
         this.isInitialized = null;
+        /**
+         * The script source URL.
+         * @type {string}
+         * @private
+         * @readonly
+         */
         this.scriptSource = 'https://sad.adsgram.ai/js/sad.min.js';
+        /**
+         * Whether the device is connected to the internet.
+         * @type {boolean}
+         * @private
+         */
         this.isConnected = navigator.onLine;
         this.config = config;
         this.loadScript()

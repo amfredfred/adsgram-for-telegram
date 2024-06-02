@@ -8,11 +8,42 @@ import { AdEventCallback } from '../interfaces/AdEventCallback';
  * Adsgram class implementation.
  */
 export class Adsgram implements IAdsgram {
+    /**
+    * The ad block config.
+    * @type {AdBlockConfig}
+    * @private
+    * @readonly
+    */
     private readonly config: AdBlockConfig;
+
+    /**
+     * The Adsgram controller.
+     * @type {IAdsgram | undefined}
+     * @private
+     */
     private adsGramController?: IAdsgram;
+
+    /**
+     * Whether the Adsgram controller is initialized.
+     * @type {boolean | null}
+     * @private
+     */
     private isInitialized: null | boolean = null;
-    private readonly scriptSource: string = 'https://sad.adsgram.ai/js/sad.min.js'
-    private isConnected = navigator.onLine;
+
+    /**
+     * The script source URL.
+     * @type {string}
+     * @private
+     * @readonly
+     */
+    private readonly scriptSource: string = 'https://sad.adsgram.ai/js/sad.min.js';
+
+    /**
+     * Whether the device is connected to the internet.
+     * @type {boolean}
+     * @private
+     */
+    private isConnected: boolean = navigator.onLine;
 
 
     /**
