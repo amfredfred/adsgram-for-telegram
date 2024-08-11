@@ -1,7 +1,7 @@
 {
-  "name": "@adsgram/tg-ads",
+  "name": "adsgram-for-telegram",
   "version": "1.0.3",
-  "description": "@adsgram/tg-ads is a novel ads network built specifically for Telegram Mini Apps. We are solving the current acute problem of the lacking ads monetisation tools for Telegram Mini Apps.",
+  "description": "adsgram-for-telegram is a novel ads network built specifically for Telegram Mini Apps. We are solving the current acute problem of the lacking ads monetisation tools for Telegram Mini Apps.",
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build"
@@ -16,7 +16,7 @@
   "homepage": "https://github.com/amfredfred/adsgram-for-telegram#readme",
   "keywords": [
     "adsgram",
-    "ads",
+    "ads on telegram",
     "telegram",
     "telegram-ads"
   ],
@@ -27,8 +27,5 @@
     "typescript": "^5.4.5"
   },
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "dependencies": {
-    "@twa-dev/types": "^7.8.0"
-  }
+  "types": "dist/index.d.ts"
 }

@@ -51,25 +51,6 @@ export class Adsgram implements IAdsgram {
      */
     constructor(config: AdsgramInitConfigs) {
         this.config = config;
-
-        if (config?.debug) {
-            if (window?.Telegram?.WebApp?.initDataUnsafe?.user == null) {
-                window = {
-                    ...window,
-                    Telegram: {
-                        WebApp: {
-                            initDataUnsafe: {
-                                user: {
-                                    id: 1234567890,
-                                    first_name: 'A First Name',
-                                },
-                            }
-                        }
-                    }
-                } as any
-            }
-        }
-
         this.loadScript()
             .then(() => this.initializeController())
             .catch((error) => console.error({ adsgram: { loading_error: error } }));
