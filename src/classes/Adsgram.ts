@@ -9,11 +9,11 @@ import { AdEventCallback } from '../interfaces/AdEventCallback';
  */
 export class Adsgram implements IAdsgram {
     /**
-    * The ad block config.
-    * @type {AdsgramInitConfigs}
-    * @private
-    * @readonly
-    */
+     * The ad block config.
+     * @type {AdsgramInitConfigs}
+     * @private
+     * @readonly
+     */
     private readonly config: AdsgramInitConfigs;
 
     /**
@@ -28,7 +28,7 @@ export class Adsgram implements IAdsgram {
      * @type {boolean | null}
      * @private
      */
-    private isInitialized: null | boolean = null;
+    private isInitialized: boolean | null = null;
 
     /**
      * The script source URL.
@@ -52,18 +52,27 @@ export class Adsgram implements IAdsgram {
     constructor(config: AdsgramInitConfigs) {
         this.config = config;
 
-        if (config.debug) {
+        if (config?.debug) {
             if (window?.Telegram?.WebApp?.initDataUnsafe?.user == null) {
-                window.Telegram.WebApp.initDataUnsafe.user = {
-                    id: 1234567890,
-                    first_name: 'A First Name',
-                };
+                window = {
+                    ...window,
+                    Telegram: {
+                        WebApp: {
+                            initDataUnsafe: {
+                                user: {
+                                    id: 1234567890,
+                                    first_name: 'A First Name',
+                                },
+                            }
+                        }
+                    }
+                } as any
             }
         }
 
         this.loadScript()
-            .then(this.initializeController)
-            .catch((error) => { console.error({ adsgram: { loading_error: error } }) })
+            .then(() => this.initializeController())
+            .catch((error) => console.error({ adsgram: { loading_error: error } }));
     }
 
     /**
@@ -71,11 +80,21 @@ export class Adsgram implements IAdsgram {
      * @returns {Promise<void>} A promise that resolves when the controller is initialized.
      */
     private async initializeController(): Promise<void> {
-        try {
-            this.adsGramController = window.Adsgram?.init?.(this.config);
-            this.isInitialized = true;
-        } catch (error) {
-            console.log({ adsgram: { controller: error } });
+        if (this.config?.blockId) {
+            try {
+                if (window.Adsgram?.init) {
+                    this.adsGramController = window.Adsgram.init(this.config);
+                    this.isInitialized = true;
+                } else {
+                    console.error('Adsgram.init is not defined');
+                    this.isInitialized = false;
+                }
+            } catch (error) {
+                console.log({ adsgram: { controller: error } });
+                this.isInitialized = false;
+            }
+        } else {
+            console.error('Adsgram: Config blockId is not provided');
             this.isInitialized = false;
         }
     }
@@ -85,12 +104,21 @@ export class Adsgram implements IAdsgram {
      * @returns {Promise<void>} A promise that resolves when the script is loaded.
      */
     private async loadScript(): Promise<void> {
-        if (!this.isConnected) return console.log("You are offline")
+        if (!this.isConnected) {
+            console.log('You are offline');
+            return;
+        }
+
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = this.scriptSource;
-            script.onload = () => resolve();
-            script.onerror = (error) => reject(error);
+            script.onload = () => {
+                resolve();
+            };
+            script.onerror = (error) => {
+                console.error('Adsgram -> Script loading error:', error);
+                reject(error);
+            };
             document.body.appendChild(script);
         });
     }
@@ -100,7 +128,11 @@ export class Adsgram implements IAdsgram {
      * @returns {Promise<void>} A promise that resolves when the controller is initialized.
      */
     private async ensureInitialized(): Promise<void> {
-        if (!this.isConnected) return console.log("You are offline")
+        if (!this.isConnected) {
+            console.log('You are offline');
+            return;
+        }
+
         if (this.isInitialized === null) {
             await new Promise(resolve => setTimeout(resolve, 300));
             return this.ensureInitialized();
@@ -115,18 +147,24 @@ export class Adsgram implements IAdsgram {
      */
     async show(): Promise<AdResultPromise> {
         await this.ensureInitialized();
-        return this.adsGramController!.show();
+        if (!this.adsGramController) {
+            throw new Error('Adsgram -> controller is not initialized');
+        }
+        return this.adsGramController.show();
     }
 
     /**
- * Adds an event listener.
- * @param {AdEvent} event - The event type.
- * @param {AdEventCallback} callback - The event callback.
- * @returns {Promise<void>} A promise that resolves when the listener is added.
- */
+     * Adds an event listener.
+     * @param {AdEvent} event - The event type.
+     * @param {AdEventCallback} callback - The event callback.
+     * @returns {Promise<void>} A promise that resolves when the listener is added.
+     */
     public async addEventListener(event: AdEvent, callback: AdEventCallback): Promise<void> {
         await this.ensureInitialized();
-        this.adsGramController!.addEventListener(event, callback);
+        if (!this.adsGramController) {
+            throw new Error('Adsgram controller is not initialized');
+        }
+        this.adsGramController.addEventListener(event, callback);
     }
 
     /**
@@ -137,9 +175,11 @@ export class Adsgram implements IAdsgram {
      */
     public async removeEventListener(event: AdEvent, callback: AdEventCallback): Promise<void> {
         await this.ensureInitialized();
-        this.adsGramController!.removeEventListener(event, callback);
+        if (!this.adsGramController) {
+            throw new Error('Adsgram controller is not initialized');
+        }
+        this.adsGramController.removeEventListener(event, callback);
     }
-
 
     /**
      * Destroys the ad.
@@ -147,7 +187,10 @@ export class Adsgram implements IAdsgram {
      */
     async destroy(): Promise<void> {
         await this.ensureInitialized();
-        this.adsGramController!.destroy();
+        if (!this.adsGramController) {
+            throw new Error('Adsgram controller is not initialized');
+        }
+        this.adsGramController.destroy();
     }
 
     /**
@@ -156,7 +199,10 @@ export class Adsgram implements IAdsgram {
      */
     async load(): Promise<boolean> {
         await this.ensureInitialized();
-        return this.adsGramController!.load();
+        if (!this.adsGramController) {
+            throw new Error('Adsgram controller is not initialized');
+        }
+        return this.adsGramController.load();
     }
 
     /**
@@ -174,5 +220,4 @@ export class Adsgram implements IAdsgram {
     get isLoading(): boolean {
         return this.adsGramController ? this.adsGramController.isLoading : false;
     }
-
 }
