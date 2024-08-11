@@ -1,4 +1,4 @@
-import { AdBlockConfig } from '../interfaces/AdBlockConfig';
+import { AdsgramInitConfigs } from '../interfaces/AdsgramInitConfigs';
 import { IAdsgram } from '../interfaces/IAdsgram';
 import { AdEvent } from '../enums/AdEvent';
 import { AdResultPromise } from '../interfaces/AdResultPromise';
@@ -10,11 +10,11 @@ import { AdEventCallback } from '../interfaces/AdEventCallback';
 export class Adsgram implements IAdsgram {
     /**
     * The ad block config.
-    * @type {AdBlockConfig}
+    * @type {AdsgramInitConfigs}
     * @private
     * @readonly
     */
-    private readonly config: AdBlockConfig;
+    private readonly config: AdsgramInitConfigs;
 
     /**
      * The Adsgram controller.
@@ -45,13 +45,22 @@ export class Adsgram implements IAdsgram {
      */
     private isConnected: boolean = navigator.onLine;
 
-
     /**
      * Constructor.
-     * @param {AdBlockConfig} config - The ad block config.
+     * @param {AdsgramInitConfigs} config - The ad block config.
      */
-    constructor(config: AdBlockConfig) {
+    constructor(config: AdsgramInitConfigs) {
         this.config = config;
+
+        if (config.debug) {
+            if (window?.Telegram?.WebApp?.initDataUnsafe?.user == null) {
+                window.Telegram.WebApp.initDataUnsafe.user = {
+                    id: 1234567890,
+                    first_name: 'A First Name',
+                };
+            }
+        }
+
         this.loadScript()
             .then(this.initializeController)
             .catch((error) => { console.error({ adsgram: { loading_error: error } }) })
@@ -63,7 +72,7 @@ export class Adsgram implements IAdsgram {
      */
     private async initializeController(): Promise<void> {
         try {
-            this.adsGramController = (window as any).Adsgram.init(this.config);
+            this.adsGramController = window.Adsgram?.init?.(this.config);
             this.isInitialized = true;
         } catch (error) {
             console.log({ adsgram: { controller: error } });
@@ -93,7 +102,7 @@ export class Adsgram implements IAdsgram {
     private async ensureInitialized(): Promise<void> {
         if (!this.isConnected) return console.log("You are offline")
         if (this.isInitialized === null) {
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 300));
             return this.ensureInitialized();
         } else if (this.isInitialized === false) {
             await this.initializeController();

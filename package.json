@@ -1,7 +1,7 @@
 {
-  "name": "adsgram-for-telegram",
+  "name": "@adsgram/telegram",
   "version": "1.0.2",
-  "description": "Adsgram is a novel ads network built specifically for Telegram Mini Apps. We are solving the current acute problem of the lacking ads monetisation tools for Telegram Mini Apps.",
+  "description": "@adsgram/telegram is a novel ads network built specifically for Telegram Mini Apps. We are solving the current acute problem of the lacking ads monetisation tools for Telegram Mini Apps.",
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build"
@@ -20,12 +20,15 @@
     "telegram",
     "telegram-ads"
   ],
-  "author": "dev fred",
+  "author": "@editorfred",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.12.13",
     "typescript": "^5.4.5"
   },
   "main": "dist/index.js",
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@twa-dev/types": "^7.8.0"
+  }
 }
